@@ -12,6 +12,7 @@ protocol MovieListInteractor {
     var error: ErrorResponse? { set get }
     
     func fetchMovies(onSuccess: @escaping ([MovieEndpoint : [Movie]]) -> Void, onFailure: @escaping (Error) -> Void)
+    func loadMovies(onSuccess: @escaping ([MovieEndpoint : [Movie]]) -> Void)
 }
 
 final class MovieListDefaultInteractor: MovieListInteractor {
@@ -64,5 +65,15 @@ final class MovieListDefaultInteractor: MovieListInteractor {
             
             onFailure(error)
         }
+    }
+    
+    func loadMovies(onSuccess: @escaping ([MovieEndpoint : [Movie]]) -> Void) {
+        MovieEndpoint.allCases.forEach { [weak self] (endpoint: MovieEndpoint) in
+            self?.dataQuery.loadHero(for: endpoint, success: { (movies: [Movie]) in
+                self?.moviesDictionary[endpoint] = movies
+            })
+        }
+        
+        onSuccess(self.moviesDictionary)
     }
 }

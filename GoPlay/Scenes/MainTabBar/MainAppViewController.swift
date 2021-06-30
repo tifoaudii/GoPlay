@@ -28,7 +28,8 @@ final class MainAppViewController: UITabBarController {
     
     private func createMovieListViewController() -> UINavigationController {
         let dataQuery = MovieDataQuery(
-            networkService: MovieNetworkService()
+            networkService: MovieNetworkService(),
+            localRepository: MovieLocalRepository()
         )
         
         let interactor = MovieListDefaultInteractor(

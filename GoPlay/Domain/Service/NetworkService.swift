@@ -57,7 +57,7 @@ final class MovieNetworkService: NetworkService {
                 DispatchQueue.main.async {
                     success(movieResponse)
                 }
-            } catch let error as NSError {
+            } catch {
                 return failure(.serializationError)
             }
         }.resume()
