@@ -10,8 +10,10 @@ import SDWebImage
 
 final class TopRatedItemCell: UICollectionViewCell {
     
+    // MARK:- Static Cell Identifier
     static let identifier: String = "TopRatedItemCellIdentifier"
     
+    // MARK:- UI Components
     private lazy var movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -28,6 +30,8 @@ final class TopRatedItemCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK:- Initializer
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureView()
@@ -38,10 +42,15 @@ final class TopRatedItemCell: UICollectionViewCell {
         configureView()
     }
     
+    // MARK:- Internal functions
+    
     func bindViewWith(movie: Movie) {
         movieTitleLabel.text = movie.title
         movieImageView.sd_setImage(with: movie.posterURL, completed: nil)
     }
+    
+    
+    // MARK:- Private functions
     
     private func configureView() {
         contentView.addSubview(movieImageView)

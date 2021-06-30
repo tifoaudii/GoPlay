@@ -8,8 +8,12 @@
 import UIKit
 
 final class UpcomingMovieCollectionCell: UITableViewCell, Animationable {
-
+    
+    // MARK:- Static Cell Identifier
+    
     static let identifier: String = "UpcomingMovieCollectionCellIdentifier"
+    
+    // MARK:- UI Components
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,7 +30,11 @@ final class UpcomingMovieCollectionCell: UITableViewCell, Animationable {
         return collectionView
     }()
     
+    // MARK:- Private data
+    
     private var upcomingMovies: [Movie] = []
+    
+    // MARK:- Initializer & Overriden functions
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,10 +46,14 @@ final class UpcomingMovieCollectionCell: UITableViewCell, Animationable {
         configureCell()
     }
     
+    // MARK:- Internal functions
+    
     func addMovies(movies: [Movie]) {
         upcomingMovies = movies
         collectionView.reloadData()
     }
+    
+    // MARK:- Private functions
     
     private func configureCell() {
         contentView.addSubview(collectionView)
@@ -50,6 +62,7 @@ final class UpcomingMovieCollectionCell: UITableViewCell, Animationable {
     }
 }
 
+// MARK:- UICollectionViewDelegateFlowLayout & UICollectionViewDataSource Implementation
 
 extension UpcomingMovieCollectionCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

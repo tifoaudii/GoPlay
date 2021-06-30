@@ -9,8 +9,10 @@ import UIKit
 
 final class UpcomingMovieItemCell: UICollectionViewCell {
     
+    // MARK:- Static Cell Identifier
     static let identifier: String = "UpcomingMovieItemCellIdentifier"
     
+    // MARK:- UI Components
     private lazy var movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -37,6 +39,8 @@ final class UpcomingMovieItemCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK:- Initializer
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureView()
@@ -47,11 +51,15 @@ final class UpcomingMovieItemCell: UICollectionViewCell {
         configureView()
     }
     
+    // MARK:- Internal functions
+    
     func bindViewWith(movie: Movie) {
         movieImageView.sd_setImage(with: movie.posterURL, completed: nil)
         movieTitleLabel.text = movie.title
         movieDescLabel.text = movie.overview
     }
+    
+    // MARK:- Private functions
     
     private func configureView() {
         let stackView = UIStackView(

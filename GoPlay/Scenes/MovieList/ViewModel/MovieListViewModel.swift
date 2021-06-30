@@ -30,6 +30,19 @@ protocol MovieListViewModel {
 
 final class MovieListDefaultViewModel: MovieListViewModel {
     
+    // MARK:- Dependencies
+    
+    private let interactor: MovieListInteractor
+    private var reachability: Reachability?
+    
+    // MARK:- Initializer
+    
+    init(interactor: MovieListInteractor) {
+        self.interactor = interactor
+    }
+    
+    // MARK:- MovieListViewModel Implementation
+    
     var moviesDictionary: [MovieEndpoint : [Movie]] = [:]
     var onNetworkReachable: (() -> Void)?
     var onNetworkUnreachable: (() -> Void)?
@@ -43,13 +56,6 @@ final class MovieListDefaultViewModel: MovieListViewModel {
     }
     
     var onStateChanged: (() -> Void)?
-    
-    private let interactor: MovieListInteractor
-    private var reachability: Reachability?
-    
-    init(interactor: MovieListInteractor) {
-        self.interactor = interactor
-    }
     
     func fetchMovies() {
         state = .request

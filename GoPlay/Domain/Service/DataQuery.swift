@@ -8,21 +8,27 @@
 import Foundation
 
 protocol DataQuery {
-    func fetchHero(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void)
-    func loadHero(for endpoint: MovieEndpoint, success: @escaping ([Movie]) -> Void)
+    func fetchMovies(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void)
+    func loadMovies(for endpoint: MovieEndpoint, success: @escaping ([Movie]) -> Void)
 }
 
 final class MovieDataQuery: DataQuery {
     
+    // MARK:- Dependencies
+    
     private let networkService: NetworkService
     private let localRepository: LocalRepository
+    
+    // MARK:- Initializer
     
     init(networkService: NetworkService, localRepository: LocalRepository) {
         self.networkService = networkService
         self.localRepository = localRepository
     }
     
-    func fetchHero(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void) {
+    // MARK:- DataQuery Protocol Implementation
+    
+    func fetchMovies(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void) {
         networkService.fetchMovie(for: endpoint) { [weak self] (response: MoviesResponse) in
             
             self?.localRepository.save(key: endpoint, movies: response.results)
@@ -38,7 +44,7 @@ final class MovieDataQuery: DataQuery {
         }
     }
     
-    func loadHero(for endpoint: MovieEndpoint, success: @escaping ([Movie]) -> Void) {
+    func loadMovies(for endpoint: MovieEndpoint, success: @escaping ([Movie]) -> Void) {
         localRepository.load(key: endpoint) { (movies: [Movie]) in
             success(movies)
         }

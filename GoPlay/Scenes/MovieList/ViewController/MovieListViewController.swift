@@ -10,7 +10,11 @@ import SwiftMessages
 
 final class MovieListViewController: UITableViewController, ViewMessages {
     
+    // MARK: - Dependency
+    
     private var viewModel: MovieListViewModel? = nil
+    
+    // MARK: - Initializer
     
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -21,6 +25,8 @@ final class MovieListViewController: UITableViewController, ViewMessages {
         super.init(coder: coder)
     }
 
+    // MARK: - View Lifecycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -37,6 +43,8 @@ final class MovieListViewController: UITableViewController, ViewMessages {
         super.viewWillDisappear(animated)
         stopNetworkMonitoring()
     }
+    
+    // MARK: - Private functions
     
     private func startNetworkMonitoring() {
         viewModel?.startNetworkMonitoring()
@@ -72,9 +80,12 @@ final class MovieListViewController: UITableViewController, ViewMessages {
         tableView.register(PopularMovieCollectionCell.self, forCellReuseIdentifier: PopularMovieCollectionCell.identifier)
         tableView.register(NowPlayingMovieCollectionCell.self, forCellReuseIdentifier: NowPlayingMovieCollectionCell.identifier)
         tableView.register(RequestStateCell.self, forCellReuseIdentifier: RequestStateCell.identifier)
+        tableView.register(ErrorStateCell.self, forCellReuseIdentifier: ErrorStateCell.identifier)
         tableView.tableFooterView = UIView()
     }
 }
+
+// MARK: - UITableViewDelegate & UITableViewDataSource Implementation
 
 extension MovieListViewController {
     
@@ -99,7 +110,15 @@ extension MovieListViewController {
             
             return cell
         case .error:
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ErrorStateCell.identifier, for: indexPath) as? ErrorStateCell else {
+                return UITableViewCell()
+            }
+            
+            cell.onReload = { [weak self] in
+                self?.viewModel?.fetchMovies()
+            }
+            
+            return cell
         case .populated:
             let section = MovieEndpoint.allCases[indexPath.section]
             switch section {

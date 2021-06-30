@@ -17,14 +17,20 @@ protocol MovieListInteractor {
 
 final class MovieListDefaultInteractor: MovieListInteractor {
     
+    // MARK:- Dependency
+    
     private let dataQuery: DataQuery
     
-    var moviesDictionary: [MovieEndpoint : [Movie]] = [:]
-    var error: ErrorResponse? = nil
+    // MARK:- Initializer
     
     init(dataQuery: DataQuery) {
         self.dataQuery = dataQuery
     }
+    
+    // MARK:- MovieListInteractor Implementation
+    
+    var moviesDictionary: [MovieEndpoint : [Movie]] = [:]
+    var error: ErrorResponse? = nil
     
     func fetchMovies(onSuccess: @escaping ([MovieEndpoint : [Movie]]) -> Void, onFailure: @escaping (Error) -> Void) {
         let dispatchQueue = DispatchQueue(
@@ -42,7 +48,7 @@ final class MovieListDefaultInteractor: MovieListInteractor {
             
             MovieEndpoint.allCases.forEach { [weak self] (endpoint: MovieEndpoint) in
                 dispatchGroup.enter()
-                self?.dataQuery.fetchHero(for: endpoint) { (response: MoviesResponse) in
+                self?.dataQuery.fetchMovies(for: endpoint) { (response: MoviesResponse) in
                     self?.moviesDictionary[endpoint] = response.results
                     dispatchGroup.leave()
                 } failure: { (error: ErrorResponse) in
@@ -69,7 +75,7 @@ final class MovieListDefaultInteractor: MovieListInteractor {
     
     func loadMovies(onSuccess: @escaping ([MovieEndpoint : [Movie]]) -> Void) {
         MovieEndpoint.allCases.forEach { [weak self] (endpoint: MovieEndpoint) in
-            self?.dataQuery.loadHero(for: endpoint, success: { (movies: [Movie]) in
+            self?.dataQuery.loadMovies(for: endpoint, success: { (movies: [Movie]) in
                 self?.moviesDictionary[endpoint] = movies
             })
         }

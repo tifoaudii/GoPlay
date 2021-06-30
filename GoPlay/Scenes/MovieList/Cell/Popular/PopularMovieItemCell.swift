@@ -9,7 +9,11 @@ import UIKit
 
 final class PopularMovieItemCell: UICollectionViewCell {
     
+    // MARK:- Static Cell Identifier
+    
     static let identifier: String = "PopularMovieItemCellIdentifier"
+    
+    // MARK:- UI Components
     
     private lazy var movieImageView: UIImageView = {
         let imageView = UIImageView()
@@ -28,6 +32,8 @@ final class PopularMovieItemCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK:- Initializer
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureView()
@@ -38,10 +44,14 @@ final class PopularMovieItemCell: UICollectionViewCell {
         configureView()
     }
     
+    // MARK:- Internal functions
+    
     func bindViewWith(movie: Movie) {
         movieImageView.sd_setImage(with: movie.posterURL, completed: nil)
         movieTitleLabel.text = movie.title
     }
+    
+    // MARK:- Private functions
     
     private func configureView() {
         let stackView = UIStackView(

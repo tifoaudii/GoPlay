@@ -9,8 +9,12 @@ import Foundation
 
 final class LocalStorage {
     
+    // MARK:- Properties
+    
     private let userDefault: UserDefaults?
     private let suiteName: String?
+    
+    // MARK:- Initializer
     
     init(suiteName: String?) {
         
@@ -23,10 +27,13 @@ final class LocalStorage {
         }
     }
     
+    // MARK:- Static functions
+    
     static func shared(suiteName: String? = nil) -> LocalStorage {
         return LocalStorage(suiteName: suiteName)
     }
     
+    // MARK:- Internal Functions
     
     func save<T: Codable>(key: String, data: [T], onSuccess: (([T]) -> Void)? = nil, onFailure: ((Error) -> Void)? = nil
     ) {
@@ -52,6 +59,7 @@ final class LocalStorage {
         }
     }
     
+    // MARK:- Private functions
     
     private func encode<T: Codable>(from data: T) throws -> String {
         let encoder = JSONEncoder()

@@ -9,7 +9,11 @@ import UIKit
 
 final class NowPlayingMovieCollectionCell: UITableViewCell, Animationable {
 
+    // MARK:- Static Cell Identifier
+    
     static let identifier: String = "NowPlayingMovieCollectionCellIdentifier"
+    
+    // MARK:- UI Components
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -25,7 +29,11 @@ final class NowPlayingMovieCollectionCell: UITableViewCell, Animationable {
         return collectionView
     }()
     
+    // MARK:- Private data
+    
     private var nowPlayingMovies: [Movie] = []
+    
+    // MARK:- Initializer & Overriden functions
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,10 +45,14 @@ final class NowPlayingMovieCollectionCell: UITableViewCell, Animationable {
         configureCell()
     }
     
+    // MARK:- Internal functions
+    
     func addMovies(movies: [Movie]) {
         nowPlayingMovies = movies
         collectionView.reloadData()
     }
+    
+    // MARK:- Private functions
     
     private func configureCell() {
         contentView.addSubview(collectionView)
@@ -48,6 +60,8 @@ final class NowPlayingMovieCollectionCell: UITableViewCell, Animationable {
         performAlphaAnimation(view: collectionView)
     }
 }
+
+// MARK:- UICollectionViewDelegateFlowLayout & UICollectionViewDataSource Implementation
 
 extension NowPlayingMovieCollectionCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

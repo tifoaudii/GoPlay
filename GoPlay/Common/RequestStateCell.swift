@@ -12,7 +12,7 @@ final class RequestStateCell: UITableViewCell {
     
     static let identifier: String = "RequestStateCellIdentifier"
     
-    private lazy var spinner: NVActivityIndicatorView = NVActivityIndicatorView(frame: .zero, type: .ballPulseSync, color: .red)
+    private lazy var spinner: NVActivityIndicatorView = NVActivityIndicatorView(frame: .zero, type: .ballPulseSync, color: .blue)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -9,7 +9,11 @@ import UIKit
 
 final class TopRatedMovieCollectionCell: UITableViewCell, Animationable {
     
+    // MARK:- Static Cell Identifier
+    
     static let identifier: String = "TopRatedMovieCollectionCellIdentifier"
+    
+    // MARK:- UI Components
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,6 +30,8 @@ final class TopRatedMovieCollectionCell: UITableViewCell, Animationable {
         return collectionView
     }()
 
+    // MARK:- Initializer & Overriden functions
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureCell()
@@ -36,17 +42,23 @@ final class TopRatedMovieCollectionCell: UITableViewCell, Animationable {
         topRatedMovies.removeAll()
     }
     
-    private var topRatedMovies: [Movie] = []
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureCell()
     }
     
+    // MARK:- Private data
+    
+    private var topRatedMovies: [Movie] = []
+    
+    // MARK:- Internal functions
+    
     func addMovies(movies: [Movie]) {
         topRatedMovies.append(contentsOf: movies)
         collectionView.reloadData()
     }
+    
+    // MARK:- Private functions
     
     private func configureCell() {
         contentView.addSubview(collectionView)
@@ -54,6 +66,8 @@ final class TopRatedMovieCollectionCell: UITableViewCell, Animationable {
         performAlphaAnimation(view: collectionView)
     }
 }
+
+// MARK:- UICollectionViewDelegateFlowLayout & UICollectionViewDataSource Implementation
 
 extension TopRatedMovieCollectionCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
