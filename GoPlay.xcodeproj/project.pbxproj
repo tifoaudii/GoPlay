@@ -16,6 +16,11 @@
 		E037164B268C2ED200781E7A /* NowPlayingMovieItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E037164A268C2ED200781E7A /* NowPlayingMovieItemCell.swift */; };
 		E0371652268C380700781E7A /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = E0371651268C380700781E7A /* Reachability */; };
 		E0371655268C387600781E7A /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = E0371654268C387600781E7A /* SDWebImage */; };
+		E037165C268C741A00781E7A /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = E037165B268C741A00781E7A /* SwiftMessages */; };
+		E037165E268C749600781E7A /* ViewMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E037165D268C749600781E7A /* ViewMessages.swift */; };
+		E0371660268C795800781E7A /* RequestStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E037165F268C795800781E7A /* RequestStateCell.swift */; };
+		E0371663268C7ED600781E7A /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = E0371662268C7ED600781E7A /* NVActivityIndicatorView */; };
+		E0371666268C842200781E7A /* Animationable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0371665268C842200781E7A /* Animationable.swift */; };
 		E07164D0268AD3D1006E30E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07164CF268AD3D1006E30E0 /* AppDelegate.swift */; };
 		E07164D4268AD3D1006E30E0 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07164D3268AD3D1006E30E0 /* MovieListViewController.swift */; };
 		E07164D9268AD3D2006E30E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E07164D8268AD3D2006E30E0 /* Assets.xcassets */; };
@@ -63,6 +68,9 @@
 		E0371645268C2B3800781E7A /* PopularMovieItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMovieItemCell.swift; sourceTree = "<group>"; };
 		E0371648268C2DCD00781E7A /* NowPlayingMovieCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingMovieCollectionCell.swift; sourceTree = "<group>"; };
 		E037164A268C2ED200781E7A /* NowPlayingMovieItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingMovieItemCell.swift; sourceTree = "<group>"; };
+		E037165D268C749600781E7A /* ViewMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMessages.swift; sourceTree = "<group>"; };
+		E037165F268C795800781E7A /* RequestStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStateCell.swift; sourceTree = "<group>"; };
+		E0371665268C842200781E7A /* Animationable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animationable.swift; sourceTree = "<group>"; };
 		E07164CC268AD3D1006E30E0 /* GoPlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoPlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E07164CF268AD3D1006E30E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E07164D3268AD3D1006E30E0 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
@@ -96,7 +104,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0371663268C7ED600781E7A /* NVActivityIndicatorView in Frameworks */,
 				E0371655268C387600781E7A /* SDWebImage in Frameworks */,
+				E037165C268C741A00781E7A /* SwiftMessages in Frameworks */,
 				E0371652268C380700781E7A /* Reachability in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,6 +346,9 @@
 			children = (
 				E0716528268B1487006E30E0 /* UIViewHelper.swift */,
 				E0371640268C24E600781E7A /* UIStackViewHelper.swift */,
+				E037165D268C749600781E7A /* ViewMessages.swift */,
+				E037165F268C795800781E7A /* RequestStateCell.swift */,
+				E0371665268C842200781E7A /* Animationable.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -368,6 +381,8 @@
 			packageProductDependencies = (
 				E0371651268C380700781E7A /* Reachability */,
 				E0371654268C387600781E7A /* SDWebImage */,
+				E037165B268C741A00781E7A /* SwiftMessages */,
+				E0371662268C7ED600781E7A /* NVActivityIndicatorView */,
 			);
 			productName = GoPlay;
 			productReference = E07164CC268AD3D1006E30E0 /* GoPlay.app */;
@@ -443,6 +458,8 @@
 			packageReferences = (
 				E0371650268C380700781E7A /* XCRemoteSwiftPackageReference "Reachability" */,
 				E0371653268C387600781E7A /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				E037165A268C741A00781E7A /* XCRemoteSwiftPackageReference "SwiftMessages" */,
+				E0371661268C7ED600781E7A /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 			);
 			productRefGroup = E07164CD268AD3D1006E30E0 /* Products */;
 			projectDirPath = "";
@@ -488,12 +505,14 @@
 			files = (
 				E0371644268C2A8200781E7A /* PopularMovieCollectionCell.swift in Sources */,
 				E071651D268AFA77006E30E0 /* NetworkService.swift in Sources */,
+				E0371666268C842200781E7A /* Animationable.swift in Sources */,
 				E07164D4268AD3D1006E30E0 /* MovieListViewController.swift in Sources */,
 				E071651F268AFA83006E30E0 /* LocalRepository.swift in Sources */,
 				E071652B268B16FA006E30E0 /* TopRatedItemCell.swift in Sources */,
 				E0716516268AF7A0006E30E0 /* MovieListInteractor.swift in Sources */,
 				E0371646268C2B3800781E7A /* PopularMovieItemCell.swift in Sources */,
 				E0716523268AFAE2006E30E0 /* MovieEndpoint.swift in Sources */,
+				E037165E268C749600781E7A /* ViewMessages.swift in Sources */,
 				E037163D268C228200781E7A /* UpcomingMovieCollectionCell.swift in Sources */,
 				E037163F268C240000781E7A /* UpcomingMovieItemCell.swift in Sources */,
 				E0716529268B1487006E30E0 /* UIViewHelper.swift in Sources */,
@@ -505,6 +524,7 @@
 				E0371641268C24E600781E7A /* UIStackViewHelper.swift in Sources */,
 				E071651B268AFA3E006E30E0 /* ErrorResponse.swift in Sources */,
 				E0716521268AFA8B006E30E0 /* LocalStorage.swift in Sources */,
+				E0371660268C795800781E7A /* RequestStateCell.swift in Sources */,
 				E071650F268AF61D006E30E0 /* Movie.swift in Sources */,
 				E0371649268C2DCD00781E7A /* NowPlayingMovieCollectionCell.swift in Sources */,
 				E037164B268C2ED200781E7A /* NowPlayingMovieItemCell.swift in Sources */,
@@ -853,6 +873,22 @@
 				minimumVersion = 5.11.1;
 			};
 		};
+		E037165A268C741A00781E7A /* XCRemoteSwiftPackageReference "SwiftMessages" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftKickMobile/SwiftMessages";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.3;
+			};
+		};
+		E0371661268C7ED600781E7A /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -865,6 +901,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E0371653268C387600781E7A /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
+		};
+		E037165B268C741A00781E7A /* SwiftMessages */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E037165A268C741A00781E7A /* XCRemoteSwiftPackageReference "SwiftMessages" */;
+			productName = SwiftMessages;
+		};
+		E0371662268C7ED600781E7A /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E0371661268C7ED600781E7A /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
