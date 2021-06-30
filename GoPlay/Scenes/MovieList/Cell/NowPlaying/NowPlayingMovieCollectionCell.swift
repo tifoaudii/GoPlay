@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NowPlayingMovieCollectionCell: UITableViewCell {
+final class NowPlayingMovieCollectionCell: UITableViewCell, Animationable {
 
     static let identifier: String = "NowPlayingMovieCollectionCellIdentifier"
     
@@ -21,6 +21,7 @@ final class NowPlayingMovieCollectionCell: UITableViewCell {
         collectionView.register(NowPlayingMovieItemCell.self, forCellWithReuseIdentifier: NowPlayingMovieItemCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.alpha = 0.0
         return collectionView
     }()
     
@@ -44,6 +45,7 @@ final class NowPlayingMovieCollectionCell: UITableViewCell {
     private func configureCell() {
         contentView.addSubview(collectionView)
         collectionView.fillSuperview()
+        performAlphaAnimation(view: collectionView)
     }
 }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PopularMovieCollectionCell: UITableViewCell {
+final class PopularMovieCollectionCell: UITableViewCell, Animationable {
     
     static let identifier: String = "PopularMovieCollectionCellIdentifier"
     
@@ -21,6 +21,7 @@ final class PopularMovieCollectionCell: UITableViewCell {
         collectionView.register(PopularMovieItemCell.self, forCellWithReuseIdentifier: PopularMovieItemCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.alpha = 0.0
         return collectionView
     }()
     
@@ -44,6 +45,7 @@ final class PopularMovieCollectionCell: UITableViewCell {
     private func configureCell() {
         contentView.addSubview(collectionView)
         collectionView.fillSuperview()
+        performAlphaAnimation(view: collectionView)
     }
 }
 

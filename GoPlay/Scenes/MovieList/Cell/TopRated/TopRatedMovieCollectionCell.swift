@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TopRatedMovieCollectionCell: UITableViewCell {
+final class TopRatedMovieCollectionCell: UITableViewCell, Animationable {
     
     static let identifier: String = "TopRatedMovieCollectionCellIdentifier"
     
@@ -22,6 +22,7 @@ final class TopRatedMovieCollectionCell: UITableViewCell {
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.alpha = 0.0
         return collectionView
     }()
 
@@ -50,6 +51,7 @@ final class TopRatedMovieCollectionCell: UITableViewCell {
     private func configureCell() {
         contentView.addSubview(collectionView)
         collectionView.fillSuperview()
+        performAlphaAnimation(view: collectionView)
     }
 }
 
