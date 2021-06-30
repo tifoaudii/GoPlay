@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Reachability
 
 enum ViewState {
     case initial
@@ -16,26 +17,35 @@ enum ViewState {
 
 protocol MovieListViewModel {
     var onStateChanged: (() -> Void)? { set get }
+    var onNetworkReachable: (() -> Void)? { set get }
+    var onNetworkUnreachable: (() -> Void)? { set get }
     var moviesDictionary: [MovieEndpoint : [Movie]] { set get }
     var state: ViewState { set get }
     
     func fetchMovies()
     func loadMovies()
+    func startNetworkMonitoring()
+    func stopNetworkMonitoring()
 }
 
 final class MovieListDefaultViewModel: MovieListViewModel {
     
     var moviesDictionary: [MovieEndpoint : [Movie]] = [:]
+    var onNetworkReachable: (() -> Void)?
+    var onNetworkUnreachable: (() -> Void)?
     
     var state: ViewState = .initial {
         didSet {
-            onStateChanged?()
+            DispatchQueue.main.async {
+                self.onStateChanged?()
+            }
         }
     }
     
     var onStateChanged: (() -> Void)?
     
     private let interactor: MovieListInteractor
+    private var reachability: Reachability?
     
     init(interactor: MovieListInteractor) {
         self.interactor = interactor
@@ -43,16 +53,37 @@ final class MovieListDefaultViewModel: MovieListViewModel {
     
     func fetchMovies() {
         state = .request
-        
-        interactor.fetchMovies { (movieDictionary: [MovieEndpoint: [Movie]]) in
-            self.moviesDictionary = movieDictionary
-            self.state = .populated
+        interactor.fetchMovies { [weak self] (movieDictionary: [MovieEndpoint: [Movie]]) in
+            self?.moviesDictionary = movieDictionary
+            self?.state = .populated
         } onFailure: { [weak self] (_) in
             self?.state = .error
         }
     }
     
-    func loadMovies() {
+    func startNetworkMonitoring() {
+        reachability = try? Reachability()
         
+        do {
+            try? reachability?.startNotifier()
+        }
+        
+        reachability?.whenUnreachable = { [weak self] _ in
+            self?.onNetworkUnreachable?()
+        }
+    }
+    
+    func stopNetworkMonitoring() {
+        reachability?.stopNotifier()
+        reachability = nil
+    }
+    
+    func loadMovies() {
+        state = .request
+        
+        interactor.loadMovies { [weak self] (movieDictionary: [MovieEndpoint : [Movie]]) in
+            self?.moviesDictionary = movieDictionary
+            self?.state = .populated
+        }
     }
 }

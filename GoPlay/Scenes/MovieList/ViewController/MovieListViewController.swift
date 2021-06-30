@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SwiftMessages
 
-final class MovieListViewController: UITableViewController {
+final class MovieListViewController: UITableViewController, ViewMessages {
     
-    private var viewModel: MovieListViewModel?
+    private var viewModel: MovieListViewModel? = nil
     
     init(viewModel: MovieListViewModel) {
         self.viewModel = viewModel
@@ -23,8 +24,26 @@ final class MovieListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        fetchMovies()
         bindViewModel()
+        fetchMovies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startNetworkMonitoring()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopNetworkMonitoring()
+    }
+    
+    private func startNetworkMonitoring() {
+        viewModel?.startNetworkMonitoring()
+    }
+    
+    private func stopNetworkMonitoring() {
+        viewModel?.stopNetworkMonitoring()
     }
     
     private func fetchMovies() {
@@ -35,15 +54,24 @@ final class MovieListViewController: UITableViewController {
         viewModel?.onStateChanged = { [weak self] in
             self?.tableView.reloadData()
         }
+        
+        viewModel?.onNetworkUnreachable = { [weak self] in
+            self?.showMessage(message: "Oops, you are offline")
+            
+            if let state = self?.viewModel?.state, state != .populated {
+                self?.viewModel?.loadMovies()
+            }
+        }
     }
     
     private func configureView() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.topItem?.title = "Movies & TV"
+        navigationController?.navigationBar.topItem?.title = "Movies"
         tableView.register(TopRatedMovieCollectionCell.self, forCellReuseIdentifier: TopRatedMovieCollectionCell.identifier)
         tableView.register(UpcomingMovieCollectionCell.self, forCellReuseIdentifier: UpcomingMovieCollectionCell.identifier)
         tableView.register(PopularMovieCollectionCell.self, forCellReuseIdentifier: PopularMovieCollectionCell.identifier)
         tableView.register(NowPlayingMovieCollectionCell.self, forCellReuseIdentifier: NowPlayingMovieCollectionCell.identifier)
+        tableView.register(RequestStateCell.self, forCellReuseIdentifier: RequestStateCell.identifier)
         tableView.tableFooterView = UIView()
     }
 }
@@ -51,6 +79,10 @@ final class MovieListViewController: UITableViewController {
 extension MovieListViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
+        guard let state = viewModel?.state, state == .populated else {
+            return 1
+        }
+        
         return MovieEndpoint.allCases.count
     }
     
@@ -61,7 +93,11 @@ extension MovieListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel?.state {
         case .request, .initial:
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStateCell.identifier, for: indexPath) as? RequestStateCell else {
+                return UITableViewCell()
+            }
+            
+            return cell
         case .error:
             return UITableViewCell()
         case .populated:
@@ -104,7 +140,7 @@ extension MovieListViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch viewModel?.state {
         case .request, .error, .initial:
-            return 0
+            return tableView.bounds.height - 50
         default:
             let section = MovieEndpoint.allCases[indexPath.section]
             switch section {
