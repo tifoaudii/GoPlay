@@ -14,9 +14,14 @@ class DataQueryTest: XCTestCase {
     final class NetworkServiceMock: NetworkService {
         
         var fetchMovieCalled = false
+        var searchMovieCalled = false
         
         func fetchMovie(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void) {
             fetchMovieCalled = true
+        }
+        
+        func searchMovie(query: String, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void) {
+            searchMovieCalled = true
         }
     }
     
