@@ -50,7 +50,23 @@ final class MainAppViewController: UITabBarController {
     }
     
     private func createSearchMovieViewController() -> UINavigationController {
-        let viewController: SearchMovieViewController = SearchMovieViewController()
+        let dataQuery = MovieDataQuery(
+            networkService: MovieNetworkService(),
+            localRepository: MovieLocalRepository()
+        )
+        
+        let interactor = SearchMovieDefaultInteractor(
+            dataQuery: dataQuery
+        )
+        
+        let viewModel = SearchMovieDefaultViewModel(
+            interactor: interactor
+        )
+        
+        let viewController: SearchMovieViewController = SearchMovieViewController(
+            viewModel: viewModel
+        )
+        
         let searchMovieItemBar: UITabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
         viewController.tabBarItem = searchMovieItemBar
         return UINavigationController(rootViewController: viewController)
