@@ -9,6 +9,7 @@ import Foundation
 
 protocol NetworkService {
     func fetchMovie(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void)
+    func searchMovie(query: String, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void)
 }
 
 final class MovieNetworkService: NetworkService {
@@ -62,5 +63,49 @@ final class MovieNetworkService: NetworkService {
             }
         }.resume()
         
+    }
+    
+    func searchMovie(query: String, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void) {
+        guard var urlComponents = URLComponents(string: "\(baseUrl)/search/movie") else {
+            return failure(.invalidEndpoint)
+        }
+        
+        let queryItems = [
+            URLQueryItem(name: "api_key", value: apiKey),
+            URLQueryItem(name: "language", value: "en-US"),
+            URLQueryItem(name: "include_adult", value: "false"),
+            URLQueryItem(name: "region", value: "US"),
+            URLQueryItem(name: "query", value: query)
+        ]
+        
+        urlComponents.queryItems = queryItems
+        
+        guard let url = urlComponents.url else {
+            return failure(.invalidEndpoint)
+        }
+        
+        urlSession.dataTask(with: url) { (data, response, error) in
+            
+            if error != nil {
+                return failure(.apiError)
+            }
+            
+            guard let response = response as? HTTPURLResponse, 200..<300 ~= response.statusCode else {
+                return failure(.invalidResponse)
+            }
+            
+            guard let data = data else {
+                return failure(.noData)
+            }
+            
+            do {
+                let movieResponse = try self.jsonDecoder.decode(MoviesResponse.self, from: data)
+                DispatchQueue.main.async {
+                    success(movieResponse)
+                }
+            } catch {
+                return failure(.serializationError)
+            }
+        }.resume()
     }
 }
