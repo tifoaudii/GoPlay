@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SearchMovieViewController: UIViewController {
+final class SearchMovieViewController: UIViewController, ViewMessages {
     
     // MARK:-  UI Components
     
@@ -29,6 +29,7 @@ final class SearchMovieViewController: UIViewController {
         tableView.register(SearchMovieResultCell.self, forCellReuseIdentifier: SearchMovieResultCell.identifier)
         tableView.register(RequestStateCell.self, forCellReuseIdentifier: RequestStateCell.identifier)
         tableView.register(ErrorStateCell.self, forCellReuseIdentifier: ErrorStateCell.identifier)
+        tableView.register(EmptyStateCell.self, forCellReuseIdentifier: EmptyStateCell.identifier)
         return tableView
     }()
     
@@ -57,20 +58,47 @@ final class SearchMovieViewController: UIViewController {
         bindViewModel()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startNetworkMonitoring()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopNetworkMonitoring()
+    }
+    // MARK:- Internal functions
+    
+    func searchMovie(query: String) {
+        guard let viewModel = self.viewModel, viewModel.state != .request, !query.isEmpty else {
+            return
+        }
+        
+        viewModel.searchMovie(query: query)
+    }
+    
     // MARK:- Private functions
+    
+    private func startNetworkMonitoring() {
+        viewModel?.startNetworkMonitoring()
+    }
+    
+    private func stopNetworkMonitoring() {
+        viewModel?.stopNetworkMonitoring()
+    }
     
     private func bindViewModel() {
         viewModel?.onStateChanged = { [weak self] in
             self?.tableView.reloadData()
         }
+        
+        viewModel?.onNetworkUnreachable = { [weak self] in
+            self?.showMessage(message: "Oops, you are offline")
+        }
     }
     
     private func bindSearchView() {
         searchView.onSearch = { [weak self] (query: String) in
-            guard let viewModel = self?.viewModel, viewModel.state != .request, !query.isEmpty else {
-                return
-            }
-            
             self?.searchQuery = query
             self?.searchMovie(query: query)
         }
@@ -92,10 +120,6 @@ final class SearchMovieViewController: UIViewController {
         view.addSubview(stackView)
         stackView.fillSuperview()
     }
-    
-    private func searchMovie(query: String) {
-        viewModel?.searchMovie(query: query)
-    }
 }
 
 // MARK:- UITableViewDelegate & UITableViewDataSource Implementation
@@ -103,6 +127,12 @@ final class SearchMovieViewController: UIViewController {
 extension SearchMovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel?.state {
+        case .empty:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: EmptyStateCell.identifier, for: indexPath) as? EmptyStateCell else {
+                return UITableViewCell()
+            }
+            
+            return cell
         case .request:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStateCell.identifier, for: indexPath) as? RequestStateCell else {
                 return UITableViewCell()

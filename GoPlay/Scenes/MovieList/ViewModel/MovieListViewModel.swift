@@ -8,16 +8,8 @@
 import Foundation
 import Reachability
 
-enum ViewState {
-    case initial
-    case request
-    case error
-    case populated
-}
-
 protocol MovieListViewModel {
     var onStateChanged: (() -> Void)? { set get }
-    var onNetworkReachable: (() -> Void)? { set get }
     var onNetworkUnreachable: (() -> Void)? { set get }
     var moviesDictionary: [MovieEndpoint : [Movie]] { set get }
     var state: ViewState { set get }
@@ -44,7 +36,6 @@ final class MovieListDefaultViewModel: MovieListViewModel {
     // MARK:- MovieListViewModel Implementation
     
     var moviesDictionary: [MovieEndpoint : [Movie]] = [:]
-    var onNetworkReachable: (() -> Void)?
     var onNetworkUnreachable: (() -> Void)?
     
     var state: ViewState = .initial {
