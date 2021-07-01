@@ -10,6 +10,7 @@ import Foundation
 protocol DataQuery {
     func fetchMovies(for endpoint: MovieEndpoint, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void)
     func loadMovies(for endpoint: MovieEndpoint, success: @escaping ([Movie]) -> Void)
+    func searchMovie(query: String, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void)
 }
 
 final class MovieDataQuery: DataQuery {
@@ -47,6 +48,18 @@ final class MovieDataQuery: DataQuery {
     func loadMovies(for endpoint: MovieEndpoint, success: @escaping ([Movie]) -> Void) {
         localRepository.load(key: endpoint) { (movies: [Movie]) in
             success(movies)
+        }
+    }
+    
+    func searchMovie(query: String, success: @escaping (MoviesResponse) -> Void, failure: @escaping (ErrorResponse) -> Void) {
+        networkService.searchMovie(query: query) { (response: MoviesResponse) in
+            DispatchQueue.main.async {
+                success(response)
+            }
+        } failure: { (error: ErrorResponse) in
+            DispatchQueue.main.async {
+                failure(error)
+            }
         }
     }
 }
