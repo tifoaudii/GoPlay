@@ -1,6 +1,3 @@
-## GoPlay iOS Test
-This project is created to fulfill iOS Engineer test at GoPlay
-
 ## Features
 - List of Movies from Top Rated, Upcoming, Popular, and Ongoing categories
 - Search Movies
